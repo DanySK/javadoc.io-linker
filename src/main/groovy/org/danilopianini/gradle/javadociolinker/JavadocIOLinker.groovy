@@ -22,7 +22,7 @@ class JavadocIOLinker implements Plugin<Project> {
                 try {
                     def packages = "${url}package-list".toURL().getText(requestProperties: ['User-Agent': ""])
                     if (!packages.contains('<')) {
-                        def destination = "${buildDir}/javadoctmp/${uripart}"
+                        def destination = "${project.buildDir}/javadoctmp/${uripart}"
                         new File(destination).mkdirs()
                         new File("${destination}/package-list") << packages
                     } else {
@@ -33,7 +33,7 @@ class JavadocIOLinker implements Plugin<Project> {
                 }
             }
         }
-        project.javadoc.dependsOn(downloadJavadocIOPackageLists)
+        project.javadoc.dependsOn(project.downloadJavadocIOPackageLists)
         project.javadoc {
             options {
                 opt ->
@@ -42,7 +42,7 @@ class JavadocIOLinker implements Plugin<Project> {
                     try {
                         def uripart = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
                         def url = "http://www.javadoc.io/page/${uripart}"
-                        def destination = "${buildDir}/javadoctmp/${uripart}"
+                        def destination = "${project.buildDir}/javadoctmp/${uripart}"
                         def packages = "${url}package-list".toURL().getText(requestProperties: ['User-Agent': ""])
                         if (!packages.contains('<')) {
                             opt.linksOffline(url, destination)
