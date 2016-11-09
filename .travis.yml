@@ -12,3 +12,4 @@ before_install:
 script:
   - ./gradlew
   - ./gradlew uploadArchives
+  - ./gradlew publishPlugins --continue || exit 0
