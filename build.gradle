@@ -20,8 +20,8 @@ repositories { mavenCentral() }
 dependencies { compile gradleApi() }
 
 pluginBundle {
-    website = "${scmRootURL}/${artifactId}"
-    vcsUrl = "${scmRootURL}/${artifactId}"
+    website = "${scmRootUrl}/${artifactId}"
+    vcsUrl = "${scmRootUrl}/${artifactId}"
     description = "${projectDescription}"
     tags = [
         'javadoc',
