@@ -10,7 +10,7 @@ buildscript {
         maven { url "https://plugins.gradle.org/m2/" }
     }
     dependencies {
-        classpath "org.danilopianini:build-commons:0.1.6"
+        classpath "org.danilopianini:javadoc.io-linker:VERSION_YOU_WANT_TO_USE"
     }
 }
 
