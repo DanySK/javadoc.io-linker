@@ -1,0 +1,60 @@
+apply plugin: 'groovy'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.danilopianini:build-commons:0.1.7"
+        classpath "com.gradle.publish:plugin-publish-plugin:0.9.6"
+    }
+}
+
+apply plugin: 'org.danilopianini.build-commons'
+apply plugin: "com.gradle.plugin-publish"
+
+repositories { mavenCentral() }
+
+dependencies { compile gradleApi() }
+
+pluginBundle {
+    website = 'https://github.com/DanySK/build-commons'
+    vcsUrl = 'https://github.com/DanySK/build-commons'
+    description = 'A rich build configuration, shareable across projects'
+    tags = [
+        'pre-configuration',
+        'configuration',
+        'javadoc',
+        'jar',
+        'pmd',
+        'findbugs',
+        'checkstyle'
+    ]
+
+    plugins {
+        buildcommonsPlugin {
+            id = 'org.danilopianini.build-commons'
+            displayName = 'build-commons'
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.project {
+                developers {
+                    developer {
+                        name 'Danilo Pianini'
+                        email 'danilo.pianini@gmail.com'
+                        url 'http://www.danilopianini.org/'
+                    }
+                }
+            }
+        }
+    }
+}
+
+defaultTasks 'clean', 'build', 'check', 'assemble', 'install', 'javadoc'
