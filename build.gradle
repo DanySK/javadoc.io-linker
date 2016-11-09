@@ -1,0 +1,57 @@
+apply plugin: 'groovy'
+
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "org.danilopianini:build-commons:${buildCommonsVersion}"
+        classpath "com.gradle.publish:plugin-publish-plugin:${publishPluginVersion}"
+    }
+}
+
+apply plugin: 'org.danilopianini.build-commons'
+apply plugin: "com.gradle.plugin-publish"
+
+repositories { mavenCentral() }
+
+dependencies { compile gradleApi() }
+
+pluginBundle {
+    website = "${scmRootUrl}/${artifactId}"
+    vcsUrl = "${scmRootUrl}/${artifactId}"
+    description = "${projectDescription}"
+    tags = [
+        'javadoc',
+        'javadoc.io',
+        'javadoc linking',
+        'link'
+    ]
+
+    plugins {
+        buildcommonsPlugin {
+            id = "${group}.${artifactId}"
+            displayName = "${artifactId}"
+        }
+    }
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.project {
+                developers {
+                    developer {
+                        name 'Danilo Pianini'
+                        email 'danilo.pianini@gmail.com'
+                        url 'http://www.danilopianini.org/'
+                    }
+                }
+            }
+        }
+    }
+}
+
+defaultTasks 'clean', 'build', 'check', 'assemble', 'install', 'javadoc'
