@@ -7,8 +7,8 @@ buildscript {
         }
     }
     dependencies {
-        classpath "org.danilopianini:build-commons:0.1.7"
-        classpath "com.gradle.publish:plugin-publish-plugin:0.9.6"
+        classpath "org.danilopianini:build-commons:${buildCommonsVersion}"
+        classpath "com.gradle.publish:plugin-publish-plugin:${publishPluginVersion}"
     }
 }
 
