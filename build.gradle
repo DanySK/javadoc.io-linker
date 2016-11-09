@@ -20,23 +20,20 @@ repositories { mavenCentral() }
 dependencies { compile gradleApi() }
 
 pluginBundle {
-    website = 'https://github.com/DanySK/build-commons'
-    vcsUrl = 'https://github.com/DanySK/build-commons'
-    description = 'A rich build configuration, shareable across projects'
+    website = "${scmRootURL}/${artifactId}"
+    vcsUrl = "${scmRootURL}/${artifactId}"
+    description = "${projectDescription}"
     tags = [
-        'pre-configuration',
-        'configuration',
         'javadoc',
-        'jar',
-        'pmd',
-        'findbugs',
-        'checkstyle'
+        'javadoc.io',
+        'javadoc linking',
+        'link'
     ]
 
     plugins {
         buildcommonsPlugin {
-            id = 'org.danilopianini.build-commons'
-            displayName = 'build-commons'
+            id = "${group}.${artifactId}"
+            displayName = "${artifactId}"
         }
     }
 }
