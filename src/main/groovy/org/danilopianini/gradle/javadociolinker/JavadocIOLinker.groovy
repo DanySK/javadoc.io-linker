@@ -17,7 +17,6 @@ class JavadocIOLinker implements Plugin<Project> {
         project.task('downloadJavadocIOPackageLists') << {
             project.configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
                 def uripart = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
-                def name = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
                 def url = "http://www.javadoc.io/page/${uripart}"
                 try {
                     def packages = "${url}package-list".toURL().getText(requestProperties: ['User-Agent': ""])
