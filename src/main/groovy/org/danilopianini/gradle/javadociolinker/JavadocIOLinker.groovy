@@ -14,22 +14,23 @@ import org.gradle.jvm.tasks.Jar
 class JavadocIOLinker implements Plugin<Project> {
     void apply(Project project) {
         project.apply plugin: 'java'
-        project.task('downloadJavadocIOPackageLists') << {
-            project.configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
-                def uripart = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
-                def name = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
-                def url = "http://www.javadoc.io/page/${uripart}"
-                try {
-                    def packages = "${url}package-list".toURL().getText(requestProperties: ['User-Agent': ""])
-                    if (!packages.contains('<')) {
-                        def destination = "${project.buildDir}/javadoctmp/${uripart}"
-                        new File(destination).mkdirs()
-                        new File("${destination}/package-list") << packages
-                    } else {
-                        println "${url} does not contain a valid javadoc and won't get linked."
+        project.task('downloadJavadocIOPackageLists') {
+            doLast {
+                project.configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
+                    def uripart = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
+                    def url = "http://www.javadoc.io/page/${uripart}"
+                    try {
+                        def packages = "${url}package-list".toURL().getText(requestProperties: ['User-Agent': ""])
+                        if (!packages.contains('<')) {
+                            def destination = "${project.buildDir}/javadoctmp/${uripart}"
+                            new File(destination).mkdirs()
+                            new File("${destination}/package-list") << packages
+                        } else {
+                            println "${url} does not contain a valid javadoc and won't get linked."
+                        }
+                    } catch (IOException e) {
+                        println "Could not contact javadoc.io. ${it.moduleGroup}:${it.moduleName}:${it.moduleVersion} will not be linked."
                     }
-                } catch (IOException e) {
-                    println "Could not contact javadoc.io. ${it.moduleGroup}:${it.moduleName}:${it.moduleVersion} will not be linked."
                 }
             }
         }
