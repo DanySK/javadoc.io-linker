@@ -12,14 +12,22 @@ class JavadocIOLinker implements Plugin<Project> {
         project.task('downloadJavadocIOPackageLists') {
             doLast {
                 project.configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
+
                     def uripart = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
-                    def url = "http://www.javadoc.io/page/${uripart}"
+                    def url = "https://static.javadoc.io/${uripart}"
+                    def destination = "${project.buildDir}/javadoctmp/${uripart}"
+                    if (new File("${destination}package-list").canRead()) {
+                        return // already downloaded
+                    }
+
                     try {
                         def packages = "${url}package-list".toURL().getText(requestProperties: ['User-Agent': ""])
                         if (!packages.contains('<')) {
-                            def destination = "${project.buildDir}/javadoctmp/${uripart}"
                             new File(destination).mkdirs()
-                            new File("${destination}/package-list") << packages
+                            new File("${destination}/package-list").newWriter().withWriter {
+                                it << packages
+                            }
+                            println "${url} downloaded."
                         } else {
                             println "${url} does not contain a valid javadoc and won't get linked."
                         }
@@ -33,19 +41,18 @@ class JavadocIOLinker implements Plugin<Project> {
         project.javadoc.dependsOn(project.downloadJavadocIOPackageLists)
 
         project.javadoc {
-            options { opt ->
-                project.configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
-                    def name = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
-                    try {
+            doFirst {
+                options { opt ->
+                    project.configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
+
                         def uripart = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
-                        def url = "http://www.javadoc.io/page/${uripart}"
+                        def url = "https://static.javadoc.io/${uripart}"
                         def destination = "${project.buildDir}/javadoctmp/${uripart}"
-                        def packages = "${url}package-list".toURL().getText(requestProperties: ['User-Agent': ""])
-                        if (!packages.contains('<')) {
+                        if (new File("${destination}package-list").canRead()) {
                             opt.linksOffline(url, destination)
+                        } else {
+                            println "${it.moduleGroup}:${it.moduleName}:${it.moduleVersion} javadoc won't be linked."
                         }
-                    } catch (IOException e) {
-                        println "${name} javadoc won't be linked"
                     }
                 }
             }
