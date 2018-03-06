@@ -1,19 +1,14 @@
 package org.danilopianini.gradle.javadociolinker
 
 import org.gradle.api.Project
-import org.gradle.api.JavaVersion;
 import org.gradle.api.Plugin
-import org.gradle.api.artifacts.DependencyResolveDetails
-import org.gradle.api.artifacts.maven.MavenDeployment
-import org.gradle.api.plugins.quality.FindBugs
-import org.gradle.api.plugins.quality.Pmd
-import org.gradle.api.tasks.javadoc.Javadoc
-import org.gradle.api.tasks.wrapper.Wrapper
-import org.gradle.jvm.tasks.Jar
 
 class JavadocIOLinker implements Plugin<Project> {
+
     void apply(Project project) {
+
         project.apply plugin: 'java'
+
         project.task('downloadJavadocIOPackageLists') {
             doLast {
                 project.configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
@@ -34,10 +29,11 @@ class JavadocIOLinker implements Plugin<Project> {
                 }
             }
         }
+
         project.javadoc.dependsOn(project.downloadJavadocIOPackageLists)
+
         project.javadoc {
-            options {
-                opt ->
+            options { opt ->
                 project.configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
                     def name = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
                     try {
