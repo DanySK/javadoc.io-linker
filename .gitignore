@@ -3,3 +3,9 @@ build/
 bin/
 version.info
 .directory
+
+# IntelliJ
+.idea
+**.iml
+**.ipr
+**.iws
