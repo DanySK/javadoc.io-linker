@@ -48,6 +48,8 @@ uploadArchives {
                         email 'danilo.pianini@gmail.com'
                         url 'http://www.danilopianini.org/'
                     }
+                }
+                contributors {
                     contributor {
                         name 'Manny Jois'
                         email 'm.k.jois@gmail.com'
