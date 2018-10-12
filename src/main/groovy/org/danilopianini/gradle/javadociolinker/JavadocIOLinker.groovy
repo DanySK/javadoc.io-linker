@@ -25,12 +25,12 @@ class JavadocIOLinker implements Plugin<Project> {
                             new File("${destination}/package-list").newWriter().withWriter {
                                 it << packages
                             }
-                            println "${url} downloaded."
+                            logger.info "${url} downloaded."
                         } else {
-                            println "${url} does not contain a valid javadoc and won't get linked."
+                            logger.warn "${url} does not contain a valid javadoc and won't get linked."
                         }
                     } catch (IOException e) {
-                        println "Could not contact javadoc.io. ${it.moduleGroup}:${it.moduleName}:${it.moduleVersion} will not be linked."
+                        logger.warn "Could not contact javadoc.io. ${it.moduleGroup}:${it.moduleName}:${it.moduleVersion} will not be linked."
                     }
                 }
             }
@@ -48,7 +48,7 @@ class JavadocIOLinker implements Plugin<Project> {
                         if (new File("${destination}package-list").canRead()) {
                             opt.linksOffline(url, destination)
                         } else {
-                            println "${it.moduleGroup}:${it.moduleName}:${it.moduleVersion} javadoc won't be linked."
+                            logger.warn "${it.moduleGroup}:${it.moduleName}:${it.moduleVersion} javadoc won't be linked."
                         }
                     }
                 }
