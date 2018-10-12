@@ -10,6 +10,7 @@ env:
 before_install:
   - sudo apt-get -qq update
   - sudo apt-get install -y graphviz
+install: true
 script:
   - 'if [ "$TRAVIS_PULL_REQUEST" = "false" ]; then bash travis_build.sh; fi'
   - 'if [ "$TRAVIS_PULL_REQUEST" != "false" ]; then bash travis_build_pull_request.sh; fi'
