@@ -11,15 +11,13 @@ class JavadocIOLinker implements Plugin<Project> {
 
         project.task('downloadJavadocIOPackageLists') {
             doLast {
-                project.configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
-
+                project.configurations.runtimeClasspath.resolvedConfiguration.firstLevelModuleDependencies.each {
                     def uripart = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
                     def url = "https://static.javadoc.io/${uripart}"
                     def destination = "${project.buildDir}/javadoctmp/${uripart}"
                     if (new File("${destination}package-list").canRead()) {
                         return // already downloaded
                     }
-
                     try {
                         def packages = "${url}package-list".toURL().getText(requestProperties: ['User-Agent': ""])
                         if (!packages.contains('<')) {
@@ -43,8 +41,7 @@ class JavadocIOLinker implements Plugin<Project> {
         project.javadoc {
             doFirst {
                 options { opt ->
-                    project.configurations.compile.resolvedConfiguration.firstLevelModuleDependencies.each {
-
+                    project.configurations.runtimeClasspath.resolvedConfiguration.firstLevelModuleDependencies.each {
                         def uripart = "${it.moduleGroup}/${it.moduleName}/${it.moduleVersion}/"
                         def url = "https://static.javadoc.io/${uripart}"
                         def destination = "${project.buildDir}/javadoctmp/${uripart}"
