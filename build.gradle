@@ -15,7 +15,9 @@ buildscript {
 apply plugin: 'org.danilopianini.build-commons'
 apply plugin: "com.gradle.plugin-publish"
 
-repositories { mavenCentral() }
+repositories {
+    mavenCentral()
+}
 
 dependencies { compile gradleApi() }
 
@@ -29,7 +31,6 @@ pluginBundle {
         'javadoc linking',
         'link'
     ]
-
     plugins {
         buildcommonsPlugin {
             id = "${group}.${artifactId}"
@@ -38,16 +39,21 @@ pluginBundle {
     }
 }
 
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            pom.project {
-                developers {
-                    developer {
-                        name 'Danilo Pianini'
-                        email 'danilo.pianini@gmail.com'
-                        url 'http://www.danilopianini.org/'
-                    }
+publishing.publications {
+    main(MavenPublication) {
+        pom {
+            developers {
+                developer {
+                    name = 'Danilo Pianini'
+                    email = 'danilo.pianini@gmail.com'
+                    url = 'http://www.danilopianini.org/'
+                }
+            }
+            contributors {
+                contributor {
+                    name = 'Manny Jois'
+                    email = 'm.k.jois@gmail.com'
+                    url = 'https://github.com/mkjois'
                 }
             }
         }
