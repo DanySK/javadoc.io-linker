@@ -52,6 +52,8 @@ jobs:
         - *reference_jdk
       install:
         - openssl aes-256-cbc -K $encrypted_62b5a1c46bb0_key -iv $encrypted_62b5a1c46bb0_iv -in prepare_environment.sh.enc -out prepare_environment.sh -d
+        - mkdir -p $HOME/.gradle
+        - touch $HOME/.gradle/gradle.properties
         - bash prepare_environment.sh
         - rm prepare_environment.sh
       script:
