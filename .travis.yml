@@ -15,7 +15,7 @@ env:
     - PUBLISH="false"
     - TERM=dumb
   matrix:
-    - JDK="adopt@1.8.212-04"
+    - JDK="adopt@1.8"
 matrix:
   include:
     - os: linux
